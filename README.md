@@ -1,7 +1,7 @@
 # Spuštění aplikace
 
-ve složce notes-app je potřeba spustit npm run dev a npm run server
-Pro příhlášení stčačí ve formuláři vyplnit cokoliv
+Ve složce notes-app je potřeba spustit npm install, potom npm run dev a nakonec npm run server.
+Pro přihlášení stačí ve formuláři vyplnit libovolné údaje. Přihlášení je jen naznačené, ale není funkční.
 
 # Nastavení repozitáře (GIT)
 
