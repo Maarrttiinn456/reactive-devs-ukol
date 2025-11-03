@@ -2,7 +2,7 @@ import { useNotes } from '../hooks/useNotes';
 import NoteCard from './NoteCard';
 
 const NotesList = () => {
-    const { notes, loading, handleDelete, handleUpdate } = useNotes();
+    const { notes, loading, handleDelete } = useNotes();
 
     if (loading) {
         return <div>Loading...</div>;
@@ -19,7 +19,6 @@ const NotesList = () => {
                     key={note.id}
                     note={note}
                     onDelete={handleDelete}
-                    onUpdate={handleUpdate}
                 />
             ))}
         </div>

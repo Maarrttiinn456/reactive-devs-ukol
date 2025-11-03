@@ -56,8 +56,7 @@ Route má props path (na jakou URl vudu odkázaný) a element {jaká stránka se
 
 # Struktura projektu
 
-V src si vytvořím složkuy
-
+V src si vytvořím složky
 1. components
 2. pages
 3. guards
@@ -66,17 +65,15 @@ V src si vytvořím složkuy
 6. api
 7. types
 
-# Tvorba Notes app
 
 # Router
 
 Budu mít vytvořené routy pro
-
 -   hoempage
 -   login
 -   register
--   note detail (/note/:id)
--   createNote
+-   add-note
+-   update-note
 
 # Layout
 
@@ -87,7 +84,7 @@ Uvnitř komponenty AppLayout bude <Outlet />, který se postará o zobrazení v�
 
 # Zobrazení homepage
 
-V souboru App.tsx, kde mám routing aplikace, zabalím stránku Homepage do route, která se postará o to, že pokud uživatel není přihlášený, přesměruje ho na /login.
+V souboru App.tsx, kde mám routing aplikace, zabalím stránku Homepage, AddNote, UpdateNote do routy, která se postará o to, že pokud uživatel není přihlášený, přesměruje ho na /login.
 Pokud přihlášený je, pustí ho na Homepage.
 
 Budu zde potřebovat pro přesměrování použít useNavigate z react-routeru.
@@ -122,23 +119,28 @@ Tento objekt následně pošlu do funkce pro registraci nebo přihlášení podl
 Ve složce types si vytvořím typ AuthFormMode, který bude moct nabývat pouze těchto dvou hodnot ('login' | 'register').
 Nová objekt bude mít typ type AuthUser.
 
+
+
+
 # API
-
-Podoba API
-
+Podoba API. Použil jsem json-server.
 <pre>
-GET	/notes
-GET	/notes/1
-POST	/notes
-PUT	/notes/1
-PATCH	/notes/1
-DELETE	/notes/1
+  GET    /posts
+  GET    /posts/:id
+  POST   /posts
+  PUT    /posts/:id
+  DELETE /posts/:id
 </pre>
 
-ve slože api si vytvořím soubory
+# Přípojení k bacnekdu
 
-## client.ts
+### Obecně
+Ve složce api si vytvořím soubor client.ts, kde budu mít základní připojení k backendu a budu zde také odchytávat chyby v případě, že se spojení nepodaří.
 
+Poté si vytvořím další soubor notesApi.ts, ve kterém budu importovat a používat svou funkci client, která mě připojí k backendu. V tomto souboru budu mít funkce pro získání všech poznámek, vytvoření poznámky, smazání poznámky podle ID a úpravu poznámky podle ID. Do funkce client budu posílat různé parametry podle toho, jakou operaci budu potřebovat provést.
+
+
+### client.ts
 Tato funkce bude sloužit pro komunikaci s backendem a bude vracet odpověď ze serveru.
 
 Půjde o univerzální funkci, která bude přijímat parametry:
@@ -148,7 +150,6 @@ Půjde o univerzální funkci, která bude přijímat parametry:
 -   data – tělo požadavku (volitelné).
 
 Součástí požadavku budou hlavičky, které mohou obsahovat:
-
 -   API klíč (pokud bude potřeba),
 -   Content-Type v případě metody POST,
 -   credentials, aby bylo možné pracovat s cookies.
@@ -159,87 +160,26 @@ Funkce bude také zachytávat chyby – například v situaci, kdy server neodpo
 
 Na výstupu bude funkce vracet data získaná z backendu.
 
-#### <b>Typescript</b>
 
-otypuji si fuknci
+### notesApi.ts
+V tomto souboru budou definovány funkce pro konkrétní operace s backendem, jak už bylo popsáno výše. Každá funkce vrátí odpověď serveru.
 
-<pre>
-  const client = async <TData,TBody> (url:string, mehod: ApiMethod, data?: TBody) : Promise<TData> {...}
-</pre>
+Nebudu zde řešit žádné React stavy – půjde čistě o funkce určené pro komunikaci s backendem. Tyto funkce budu následně používat v hooku useNotes, kde už budu pracovat se stavy jako loading a error.
 
-return server data otypuji jako TData
 
-Při použitá funkce client potom musím typovat, co očekývým a posílám za data
+# useNotes (hook)
+(alternativně by šlo jít cestou Contextu)
 
-## notesApi.ts
+V tomto hooku se bude odehrávat veškerá logika spojená s poznámkami. Hook bude mít tři vlastní stavy: notes, loading a error.
 
-V tomto souboru importuji funkci client z client.ts a definuji zde funkce, které se týkají práce s poznámkami.
+Budu zde mít i funkce pro CRUD operace. Nejprve provedu změnu na serveru a pokud proběhne úspěšně, promítnu ji i lokálně do notes.
 
-Tyto funkce budu následně používat v React hookách, kde z nich budu načítat data a zároveň zpracovávat stav načítání (loading) a případné chyby (error).
+Všechny funkce a stavy potom vrátím v returnu hooku abych je mohl používat na příslušných místech
 
-export const getNotes = async () => {
-return await client('/notes', 'GET');
-};
 
-export const createNote = async (data) => {
-return await client('/notes', 'POST', data);
-};
+# Výpis poznámek
 
-export const updateNote = async (id, data) => {
-return await client(`/notes/${id}`, 'PUT', data);
-};
+vytvořím si komponenty NotesList a NoteCard, kde v listu budu foreachem projíždět 
 
-export const deleteNote = async (id) => {
-return await client(`/notes/${id}`, 'DELETE');
-};
 
-## authApi.tx
 
-# Komponenty
-
-## NoteList.tsx
-
-Bude naimportovaná v Homepage.tsx
-
-Zde budu také načítat poznámky z backendu pomocí vlastního hooku.
-
-Pomocí funkce map projdu všechny poznámky a pro každou z nich zobrazím komponentu NoteCard, kam předám potřebné props.
-
-### Fetch dat (useNotes)
-
-Vytvořím si vlastní hook useNotes, který bude mít vůj stav notes, loading, error a funkce které se budou starat o mazání, úpravu, přidání, odebrání.
-
-Alternativou by bylo vytvořit k tomu místo hooku Context, ale vydám se cestou hooku protože aplikace není složitá.
-
-Hook bude exportovat:
-notes – samotná data,
-loading – načítání,
-error – hláška.
-fetchNotes - funkce
-createNote - funkce
-deleteNote - funkce
-updateNote - funkce
-
-Pomocí asynchronní funkce fetchNotes se pokusím získat data z backendu.
-Funkce obsahuje blok try...catch, kde v části try nastavím loading na true a pokusím se získat data pomocí funkce getNotes.
-
-Pokud se vyskytne nějaká chyba, její text uložím do stavu error pomocí setError(response.status/message).
-Pokud vše proběhne v pořádku, uloží se získaná data do stavu notes.
-
-V bloku catch se snažím zachytit případný error a ve finally nastavuji loading zpět na false.
-
-Funkci fetchNotes volám v useEffectu, aby mi spustila jen jednou při cačtení componenty.
-
-#### <b>Typescript</b>
-
-stav notes si nastavím jako type Notes[] | null, vše ostatní(loading,error) si přiřadí správný typ samo.
-
-## NoteCard.tsx
-
-Komponenta která bude reprezentovat jednu poznámku. Bude přijímat props jako id, title, text, date.
-
-Bude také přijímat funkci on
-
-#### <b>Typescript</b>
-
-těmto props taky vytvořím type NoteCardProps

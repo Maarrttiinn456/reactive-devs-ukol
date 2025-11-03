@@ -64,8 +64,12 @@ export const useNotes = () => {
     const handleUpdate = async (id: string, data: NewNote) => {
         setLoading(true);
         try {
-            const res = await updateNoteById(id, data);
-            console.log('res:', res);
+            const updated = await updateNoteById(id, data);
+            setNotes(prev => {
+                if (!prev) return prev;
+                return prev.map(note => (note.id === id ? updated : note));
+            });
+            return updated;
         } catch (error) {
             setError('Nepodařilo se aktualizovat poznámku');
             throw error;
