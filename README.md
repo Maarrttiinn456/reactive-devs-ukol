@@ -1,6 +1,7 @@
 # Spuštění aplikace
 
 ve složce notes-app je potřeba spustit npm run dev a npm run server
+Pro příhlášení stčačí ve formuláři vyplnit cokoliv
 
 # Nastavení repozitáře (GIT)
 
