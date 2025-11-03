@@ -38,7 +38,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
     const registerUser = async (user: NewUser) => {
         /*
-        setStatus('loading');
+        setStatus('loadidng');  
 
         if (!res.ok) {
             setStatus("unauthenticated");
