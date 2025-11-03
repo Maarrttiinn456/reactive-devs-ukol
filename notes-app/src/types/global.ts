@@ -9,3 +9,18 @@ export type NewNote = Omit<Note, 'id'>;
 export type NotesResponse = Note[];
 
 export type NoteResponse = Note;
+
+export type User = {
+    id: string;
+    username: string;
+    password: string;
+};
+
+export type UserSeverResponse = {
+    ok: boolean;
+    data: User;
+};
+
+export type NewUser = Omit<User, 'id'>;
+
+export type UserResponse = User;
