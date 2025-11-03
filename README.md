@@ -19,9 +19,9 @@ Pro přihlášení stačí ve formuláři vyplnit libovolné údaje. Přihláše
 
 # Nastavení VS code
 
-### Ve VS code bych si nainstaloval rozšíření Prettier - Code formatter
+### Ve VS Code bych si nainstaloval rozšíření Prettier – Code formatter
 
-V nastavení VS code bych si otevřel settings.json a tam bych přidal tyto řádky, které sa mi budou starat o to, že kód bude v Reactu správně formátovaný.
+V nastavení VS Code bych si otevřel settings.json a přidal tyto řádky, které se postarají o správné formátování kódu v Reactu:
 
 <pre>
 "[javascriptreact]": {
@@ -38,30 +38,29 @@ V nastavení VS code bych si otevřel settings.json a tam bych přidal tyto řá
 
 # Nastavení projektu
 
-1. Promazal bych složku složku src, kde bych nechal main.tsx, index.css a App.tsx
-2. Instalace taiwlindu `npm install tailwindcss @tailwindcss/vite`taiwlind musím zanést do vite.configu a naimportovat do index.css
-3. Instalace react-routeru
+1. Promazal bych složku src, kde bych nechal pouze main.tsx, index.css a App.tsx.
+2. Instalace Tailwindu: npm install tailwindcss @tailwindcss/vite. Tailwind je potřeba zanést do vite.config.ts a importovat do index.css.
+3. Instalace React Routeru.
 
 ### Vite
 
-Vytvořím si proxy abych se mohl na backend odkazovat jako /api
+Vytvořím si proxy, abych se mohl na backend odkazovat jako /api.
 
 ### React router
 
-Nainstaluju react-router `npm i react-router`
-Naimportuju potřebné komponenty z react routeru
+Nainstaluji React Router: npm i react-router
+Naimportuji potřebné komponenty z React Routeru:
 
 -   BrowserRouter (tím obalím celou aplikaci v main.tsx)
 -   Routes
 -   Route
 
-V App.tsx potom budu mít rouutovací systém, kde do Routes zabalím jednotlivé Route.
-
-Route má props path (na jakou URl vudu odkázaný) a element {jaká stránka se zobrazí}
+V App.tsx budu mít routovací systém, kde do Routes zabalím jednotlivé Route.
+Route má props path (na jakou URL bude odkazovat) a element (jaká stránka se zobrazí).
 
 # Struktura projektu
 
-V src si vytvořím složky
+V src si vytvořím složky:
 
 1. components
 2. pages
@@ -73,7 +72,7 @@ V src si vytvořím složky
 
 # Router
 
-Budu mít vytvořené routy pro
+Budu mít vytvořené routy pro:
 
 -   homepage
 -   login
@@ -84,9 +83,9 @@ Budu mít vytvořené routy pro
 # Layout
 
 V souboru App.tsx zabalím všechny routy do jedné nadřazené, které přiřadím element AppLayout.
-AppLayout bude komponenta umístěná v layouts/AppLayout, která bude zajišťovat kontejner stránky a její pozadí atd...
+AppLayout bude komponenta umístěná v layouts/AppLayout, která bude zajišťovat kontejner stránky, pozadí apod.
 
-Uvnitř komponenty AppLayout bude <Outlet />, který se postará o zobrazení všech podřízených rout, které této nadřazené route podléhají.
+Uvnitř komponenty AppLayout bude <Outlet />, který se postará o zobrazení všech podřízených rout.
 
 # Zobrazení homepage
 
@@ -225,7 +224,7 @@ V tomto režimu po úspěšném vytvoření objektu volám funkci handleCreate(f
 
 Pokud funkce nevyhodí chybu (throw error), po vytvoření poznámky přesměruji uživatele na homepage s výpisem poznámek.
 
-### update mod
+### update mode
 
 Pomocí useParams získám id poznámky, kterou upravuji.
 
