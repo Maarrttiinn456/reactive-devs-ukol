@@ -25,8 +25,8 @@ const NoteForm = ({ mode }: NoteFormProps) => {
     const handleForm = async (e: FormEvent) => {
         e.preventDefault();
 
-        let titleValue = title.current?.value;
-        let textValue = text.current?.value;
+        const titleValue = title.current?.value;
+        const textValue = text.current?.value;
 
         if (!titleValue || !textValue) {
             return alert('Vypňte prosím title a text');

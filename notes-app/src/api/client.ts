@@ -6,12 +6,19 @@ export const client = async <TData, TBody = unknown>(
     data?: TBody
 ): Promise<TData> => {
     try {
+        const accessToken = window.localStorage.getItem('accessToken');
+
         const response = await fetch(`/api/${url}`, {
             method: method,
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: !!accessToken
+                ? {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${accessToken}`,
+                  }
+                : {
+                      'Content-Type': 'application/json',
+                  },
             body: data ? JSON.stringify(data) : undefined,
         });
 

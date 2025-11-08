@@ -23,8 +23,13 @@ const App = () => {
                         element={<UpdateNote />}
                     ></Route>
                 </Route>
+
                 <Route path="/login" element={<LoginPage />}></Route>
                 <Route path="/register" element={<RegisterPage />}></Route>
+
+                {/** TODO 
+                <Route path="*" element={}></Route>
+                **/}
             </Route>
         </Routes>
     );

@@ -10,6 +10,8 @@ type NoteCardProps = {
 const NoteCard = ({ note, onDelete }: NoteCardProps) => {
     const { id, title, text } = note;
 
+    console.log(title);
+
     const navigate = useNavigate();
 
     return (

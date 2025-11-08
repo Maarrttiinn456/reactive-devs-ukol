@@ -23,11 +23,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         const checkIfUserIsLogin = async () => {
             try {
                 const res = await isUserAuthorized();
-                if (!res.ok) {
+                if (!res.accessToken) {
                     setStatus('unauthenticated');
                     return;
                 }
                 setStatus('authenticated');
+                window.localStorage.setItem('accessToken', res.accessToken);
             } catch {
                 setStatus('unauthenticated');
             }
@@ -53,11 +54,11 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         const res = await login(user);
 
-        if (!res.ok) {
-            setStatus("unauthenticated");
-            throw new Error("Nepodařilo se přihlásit");
+        if (!res.accessToken) {
+            setStatus('unauthenticated');
+            throw new Error('Nepodařilo se přihlásit');
         }
-        */
+            */
 
         setStatus('authenticated');
     };

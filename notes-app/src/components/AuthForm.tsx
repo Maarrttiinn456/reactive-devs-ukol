@@ -7,6 +7,20 @@ import Button from './Button';
 type AuthFormProps = {
     mode: 'register' | 'login';
 };
+/*
+type A =
+    | {
+          mode: 'register';
+          username: string;
+          password: string;
+          firstName: string;
+      }
+    | {
+          mode: 'login';
+          username: string;
+          password: string;
+      };
+*/
 
 const AuthForm = ({ mode }: AuthFormProps) => {
     const [username, setUsername] = useState('');
@@ -14,6 +28,14 @@ const AuthForm = ({ mode }: AuthFormProps) => {
 
     const navigate = useNavigate();
     const { loginUser, registerUser } = useAuth();
+
+    /*
+    const a = (x: A) => {
+        if (x.mode === 'login') {
+            x.username = 'aaa';
+        }
+    };
+    */
 
     const handleForm = async (e: FormEvent) => {
         e.preventDefault();

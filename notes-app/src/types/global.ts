@@ -17,7 +17,7 @@ export type User = {
 };
 
 export type UserSeverResponse = {
-    ok: boolean;
+    accessToken: string;
     data: User;
 };
 

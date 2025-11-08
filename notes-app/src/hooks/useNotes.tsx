@@ -24,14 +24,21 @@ export const useNotes = () => {
         }
     };
 
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     const handleDelete = async (id: string) => {
         setLoading(true);
 
         try {
             await deleteNoteById(id);
 
+            /*
+                fetchData()
+            */
+
             setNotes((prev) => {
-                if (!prev) return null;
                 const result = prev?.filter((note) => note.id !== id);
                 return result;
             });
@@ -65,9 +72,9 @@ export const useNotes = () => {
         setLoading(true);
         try {
             const updated = await updateNoteById(id, data);
-            setNotes(prev => {
+            setNotes((prev) => {
                 if (!prev) return prev;
-                return prev.map(note => (note.id === id ? updated : note));
+                return prev.map((note) => (note.id === id ? updated : note));
             });
             return updated;
         } catch (error) {
