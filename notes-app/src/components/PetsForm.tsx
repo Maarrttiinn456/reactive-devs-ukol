@@ -1,59 +1,81 @@
-import { useState, type FormEvent } from 'react';
+import { useState, type SyntheticEvent } from 'react';
 import Button from './Button';
+import InputText from './InputText';
+import InputSelect from './InputSelect';
+import type { NewPet } from '../types/global';
 import usePets from '../hooks/usePets';
+import LoadingSpinner from './LoadingSpinner';
+import { statusOptions } from '../constants';
 
 const PetsForm = () => {
     const [name, setName] = useState('');
     const [photoUrls, setPhotoUrls] = useState('');
+    const [status, setStatus] = useState('');
 
-    const { fetchAddPet } = usePets();
+    const { fetchAddPet, loading, message } = usePets();
 
-    const handleForm = async (e: FormEvent) => {
+    const handleForm = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         if (!name || !photoUrls) {
-            return alert('Vyplňte pole');
+            return alert('Vypň prosím pole');
         }
 
-        const urls = photoUrls.trim().split(',');
+        const photosUrlArray = photoUrls.trim().split(',');
 
-        const data = {
+        const dataToFetch: NewPet = {
             name,
-            photoUrls: urls,
-            status: 'available',
+            photoUrls: photosUrlArray,
+            status: status,
         };
 
-        fetchAddPet(data);
+        if (dataToFetch) {
+            fetchAddPet(dataToFetch);
+
+            setName('');
+            setPhotoUrls('');
+        }
     };
 
-    return (
-        <form className="w-full space-y-6" onSubmit={handleForm}>
-            <div className="flex flex-col gap-y-2">
-                <label htmlFor="title">Name</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="border px-3 py-2"
-                />
-            </div>
-            <div className="flex flex-col gap-y-2">
-                <label htmlFor="title">photoUrls</label>
-                <input
-                    type="text"
-                    id="photo"
-                    name="photo"
-                    value={photoUrls}
-                    onChange={(e) => setPhotoUrls(e.target.value)}
-                    className="border px-3 py-2"
-                />
-            </div>
+    if (loading) {
+        return <LoadingSpinner />;
+    }
 
-            <div className="flex justify-center">
-                <Button type="submit" variant="gray" text="Odeslat" />
-            </div>
-        </form>
+    return (
+        <div className="flex flex-col items-center justify-center">
+            {message && <div className="py-4">{message}</div>}
+            <form className="w-full max-w-md space-y-6" onSubmit={handleForm}>
+                <InputText
+                    label="Name"
+                    id="name"
+                    value={name}
+                    onChange={setName}
+                />
+                <div>
+                    <InputText
+                        label="PhotoUrls"
+                        id="photo"
+                        value={photoUrls}
+                        onChange={setPhotoUrls}
+                    />
+                    <div className="text-gray-600 text-xs">
+                        Jednolitové URL oddělujte čárkou
+                    </div>
+                </div>
+
+                <InputSelect
+                    label="Status"
+                    id="status"
+                    value={status}
+                    onChange={setStatus}
+                    options={statusOptions}
+                />
+
+                <div className="flex justify-center">
+                    <Button type="submit" variant="gray" text="Odeslat" />
+                </div>
+            </form>
+        </div>
     );
 };
 

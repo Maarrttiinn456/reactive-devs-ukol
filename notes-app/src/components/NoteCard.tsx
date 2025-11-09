@@ -22,7 +22,7 @@ const NoteCard = ({ note, onDelete }: NoteCardProps) => {
                 <Button
                     text="Upravit"
                     variant="gray"
-                    onClick={() => navigate(`/update-note/${id}`)}
+                    onClick={() => navigate(`update-note/${id}`)}
                 />
                 <Button
                     text="Smazat"

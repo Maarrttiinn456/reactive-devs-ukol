@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
-import { addPet, getPetsByStats } from '../api/petsApi';
 import type { NewPet, Pet } from '../types/global';
-
-export type StatusType = 'available' | 'pending' | 'sold';
+import { addPet, getPetsByStats } from '../api/petsApi';
 
 const usePets = () => {
     const [pets, setPets] = useState<Pet[]>([]);
-    const [status, setStatus] = useState<StatusType>('available');
+    const [status, setStatus] = useState('available');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
 
     const fetchPetsByStatus = async () => {
         try {
@@ -16,13 +14,11 @@ const usePets = () => {
             const data = await getPetsByStats(status);
             setPets(data);
         } catch (error) {
-            console.log('error:', error);
             const message =
-                error instanceof Error
-                    ? error.message
-                    : 'Nepodřilo se načíst poznámky';
+                error instanceof Error ? error.message : 'Něco se pokazilo';
 
-            setError(message);
+            console.log(message);
+            setMessage(message);
         } finally {
             setLoading(false);
         }
@@ -32,15 +28,14 @@ const usePets = () => {
         try {
             setLoading(true);
             await addPet(data);
+            setMessage('Nový mazlíček úspěšně vytvořen');
             fetchPetsByStatus();
         } catch (error) {
-            console.log('error:', error);
             const message =
-                error instanceof Error
-                    ? error.message
-                    : 'Nepodřilo se načíst poznámky';
+                error instanceof Error ? error.message : 'Něco se pokazilo';
 
-            setError(message);
+            console.log(message);
+            setMessage(message);
         } finally {
             setLoading(false);
         }
@@ -52,10 +47,11 @@ const usePets = () => {
 
     return {
         pets,
-        status,
         loading,
-        error,
+        message,
+        status,
         setStatus,
+        fetchPetsByStatus,
         fetchAddPet,
     };
 };

@@ -1,9 +1,9 @@
-import { NavLink, Outlet } from 'react-router';
+import { Outlet, NavLink } from 'react-router';
 import SubNavigation from '../components/SubNavigation';
 
-const PetsPage = () => {
+const NotesPage = () => {
     return (
-        <div>
+        <>
             <SubNavigation>
                 <NavLink
                     to=""
@@ -22,7 +22,7 @@ const PetsPage = () => {
                     List
                 </NavLink>
                 <NavLink
-                    to="add-pet"
+                    to="add-note"
                     className={({ isActive, isPending }) =>
                         [
                             'px-3 py-0.2 ',
@@ -39,8 +39,8 @@ const PetsPage = () => {
             </SubNavigation>
 
             <Outlet />
-        </div>
+        </>
     );
 };
 
-export default PetsPage;
+export default NotesPage;

@@ -1,40 +1,36 @@
 import usePets from '../hooks/usePets';
+import ListGridLayout from '../layouts/ListGridLayout';
+import InputSelect from './InputSelect';
 import LoadingSpinner from './LoadingSpinner';
 import PetCard from './PetCard';
-import PetsForm from './PetsForm';
-import InputSelect from './InputSelect';
-
 import { statusOptions } from '../constants';
 
 const PetsList = () => {
-    const { pets, status, loading, setStatus } = usePets();
+    const { pets, loading, status, setStatus } = usePets();
 
     if (loading) {
         return <LoadingSpinner />;
     }
 
-    if (pets.length === 0) {
-        return <div>Nemám žádná data</div>;
-    }
-
     return (
         <>
-            <div className="max-w-xl mx-auto">
-                <PetsForm />
+            <div className="pb-8">
                 <InputSelect
+                    label="Status"
                     id="status"
-                    label="status"
                     value={status}
-                    options={statusOptions}
                     onChange={setStatus}
+                    options={statusOptions}
                 />
             </div>
-
-            <div className="mt-8 grid grid-cols-3 gap-4">
-                {pets.map((pet, index) => (
-                    <PetCard key={`${pet.id}-${index}`} pet={pet} />
+            <ListGridLayout>
+                {pets.slice(0, 20)?.map((pet, index) => (
+                    <PetCard
+                        key={`${pet.id}-${pet.name}-${pet.status}-${index}`}
+                        pet={pet}
+                    />
                 ))}
-            </div>
+            </ListGridLayout>
         </>
     );
 };

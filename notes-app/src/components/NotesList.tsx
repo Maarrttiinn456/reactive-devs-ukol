@@ -1,5 +1,6 @@
 import { useNotes } from '../hooks/useNotes';
 import NoteCard from './NoteCard';
+import ListGridLayout from '../layouts/ListGridLayout';
 
 const NotesList = () => {
     const { notes, loading, handleDelete } = useNotes();
@@ -15,11 +16,11 @@ const NotesList = () => {
     }
 
     return (
-        <div className="grid grid-cols-3 gap-4">
+        <ListGridLayout>
             {notes?.map((note) => (
                 <NoteCard key={note.id} note={note} onDelete={handleDelete} />
             ))}
-        </div>
+        </ListGridLayout>
     );
 };
 
