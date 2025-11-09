@@ -1,3 +1,4 @@
+//Notes
 export type Note = {
     id: string;
     title: string;
@@ -10,17 +11,32 @@ export type NotesResponse = Note[];
 
 export type NoteResponse = Note;
 
+//User
 export type User = {
     id: string;
     username: string;
     password: string;
 };
 
+export type NewUser = Omit<User, 'id'>;
+
+export type UserResponse = User;
+
+//Auth
 export type UserSeverResponse = {
     accessToken: string;
     data: User;
 };
 
-export type NewUser = Omit<User, 'id'>;
+//Pets
 
-export type UserResponse = User;
+export type Pet = {
+    id: number;
+    name: string;
+    photoUrls: string[];
+    status: string;
+};
+
+export type NewPet = Omit<Pet, 'id'>;
+
+export type PetsResponse = Pet[];

@@ -68,7 +68,7 @@ const AuthForm = ({ mode }: AuthFormProps) => {
 
     return (
         <div className="flex justify-center">
-            <form className="w-full max-w-md space-y-6" onSubmit={handleForm}>
+            <form className="w-full space-y-6" onSubmit={handleForm}>
                 <div className="flex flex-col gap-y-2">
                     <label htmlFor="username">Uživatelské jméno</label>
                     <input

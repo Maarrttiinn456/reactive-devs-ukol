@@ -22,7 +22,7 @@ export const client = async <TData, TBody = unknown>(
             body: data ? JSON.stringify(data) : undefined,
         });
 
-        //console.log(response);
+        console.log('response:', response);
 
         if (!response.ok) {
             throw new Error('Nepodařilo se načíst datat ze serveru');

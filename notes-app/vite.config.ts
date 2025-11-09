@@ -7,6 +7,12 @@ export default defineConfig({
     plugins: [react(), tailwindcss()],
     server: {
         proxy: {
+            '/api/pets': {
+                target: 'https://petstore.swagger.io/v2',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api\/pets/, ''),
+            },
+
             '/api': {
                 target: 'http://localhost:4000',
                 changeOrigin: true,

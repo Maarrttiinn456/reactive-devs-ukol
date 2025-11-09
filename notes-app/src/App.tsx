@@ -8,6 +8,7 @@ import AddNotes from './pages/AddNotes';
 import UpdateNote from './pages/UpdateNote';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import PetsPage from './pages/PetsPage';
 
 import ProtectedRoutes from './guards/ProtectedRoutes';
 
@@ -15,22 +16,18 @@ const App = () => {
     return (
         <Routes>
             <Route element={<AppLayout />}>
-                <Route path="/" element={<ProtectedRoutes />}>
-                    <Route index element={<HomePage />}></Route>
-                    <Route path="/add-note" element={<AddNotes />}></Route>
-                    <Route
-                        path="/update-note/:id"
-                        element={<UpdateNote />}
-                    ></Route>
-                </Route>
+                <Route index element={<HomePage />}></Route>
+                <Route path="/add-note" element={<AddNotes />}></Route>
+                <Route path="/update-note/:id" element={<UpdateNote />}></Route>
+                <Route path="/pets" element={<PetsPage />}></Route>
+            </Route>
 
-                <Route path="/login" element={<LoginPage />}></Route>
-                <Route path="/register" element={<RegisterPage />}></Route>
+            <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/register" element={<RegisterPage />}></Route>
 
-                {/** TODO 
+            {/** TODO 
                 <Route path="*" element={}></Route>
                 **/}
-            </Route>
         </Routes>
     );
 };
