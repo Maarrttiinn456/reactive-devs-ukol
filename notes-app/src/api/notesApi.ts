@@ -1,5 +1,5 @@
 import type { NewNote, NoteResponse, NotesResponse } from '../types/global';
-import { client } from './client';
+import { client } from './client_old';
 
 export const getNotes = async () => {
     return await client<NotesResponse>('notes', 'GET');

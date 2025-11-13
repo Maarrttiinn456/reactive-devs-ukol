@@ -27,16 +27,3 @@ export type UserSeverResponse = {
     accessToken: string;
     data: User;
 };
-
-//Pets
-
-export type Pet = {
-    id: number;
-    name: string;
-    photoUrls: string[];
-    status: string;
-};
-
-export type NewPet = Omit<Pet, 'id'>;
-
-export type PetsResponse = Pet[];

@@ -1,4 +1,4 @@
-import { client } from './client';
+import { client } from './client_old';
 import type { NewUser, UserSeverResponse } from '../types/global';
 
 export const isUserAuthorized = async () => {

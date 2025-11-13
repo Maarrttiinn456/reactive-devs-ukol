@@ -10,7 +10,7 @@ export default defineConfig({
             '/api/pets': {
                 target: 'https://petstore.swagger.io/v2',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api\/pets/, ''),
+                rewrite: (path) => path.replace(/^\/api\/petstore/, ''),
             },
 
             '/api': {
