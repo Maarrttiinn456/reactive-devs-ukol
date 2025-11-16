@@ -1,18 +1,20 @@
 import { useState, type SyntheticEvent } from 'react';
 import Button from './Button';
 import InputText from './InputText';
-import InputSelect from './InputSelect';
-import type { NewPet } from '../types/global';
-import usePets from '../hooks/usePets';
-import LoadingSpinner from './LoadingSpinner';
-import { statusOptions } from '../constants';
+import { FindPetsByStatusStatusItem, PetStatus, useAddPet } from '../api/api';
+import MultiSelect from './MultiSelect';
+
+const statusOptions = Object.values(PetStatus).map((status) => ({
+    value: status,
+    label: status.charAt(0).toUpperCase() + status.slice(1),
+}));
 
 const PetsForm = () => {
     const [name, setName] = useState('');
     const [photoUrls, setPhotoUrls] = useState('');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState<FindPetsByStatusStatusItem[]>([]);
 
-    const { fetchAddPet, loading, message } = usePets();
+    const { mutate, isError, isSuccess, error } = useAddPet();
 
     const handleForm = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -23,27 +25,18 @@ const PetsForm = () => {
 
         const photosUrlArray = photoUrls.trim().split(',');
 
-        const dataToFetch: NewPet = {
+        console.log(photosUrlArray);
+
+        const newPet = {
             name,
             photoUrls: photosUrlArray,
-            status: status,
         };
 
-        if (dataToFetch) {
-            fetchAddPet(dataToFetch);
-
-            setName('');
-            setPhotoUrls('');
-        }
+        mutate({ data: newPet });
     };
-
-    if (loading) {
-        return <LoadingSpinner />;
-    }
 
     return (
         <div className="flex flex-col items-center justify-center">
-            {message && <div className="py-4">{message}</div>}
             <form className="w-full max-w-md space-y-6" onSubmit={handleForm}>
                 <InputText
                     label="Name"
@@ -63,17 +56,27 @@ const PetsForm = () => {
                     </div>
                 </div>
 
-                <InputSelect
-                    label="Status"
-                    id="status"
-                    value={status}
-                    onChange={setStatus}
-                    options={statusOptions}
+                <MultiSelect
+                    statusOptions={statusOptions}
+                    selectedValues={status}
+                    setValues={setStatus}
                 />
 
                 <div className="flex justify-center">
                     <Button type="submit" variant="gray" text="Odeslat" />
                 </div>
+
+                {isSuccess && (
+                    <div className="text-green-600 text-center">
+                        Mazlíček byl úspěšně přidán!
+                    </div>
+                )}
+
+                {isError && (
+                    <div className="text-red-600 text-center">
+                        Nastala chyba: {String(error)}
+                    </div>
+                )}
             </form>
         </div>
     );

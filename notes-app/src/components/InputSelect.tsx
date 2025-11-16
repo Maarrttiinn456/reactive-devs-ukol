@@ -25,6 +25,7 @@ const InputSelect = <T extends string>({
             </label>
 
             <select
+                multiple
                 name={id}
                 id={id}
                 value={value}

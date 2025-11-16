@@ -1,41 +1,17 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router';
-import { useAuth } from '../context/AuthContext';
 import type { NewUser } from '../types/global';
 import Button from './Button';
 
 type AuthFormProps = {
     mode: 'register' | 'login';
 };
-/*
-type A =
-    | {
-          mode: 'register';
-          username: string;
-          password: string;
-          firstName: string;
-      }
-    | {
-          mode: 'login';
-          username: string;
-          password: string;
-      };
-*/
 
 const AuthForm = ({ mode }: AuthFormProps) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
-    const { loginUser, registerUser } = useAuth();
-
-    /*
-    const a = (x: A) => {
-        if (x.mode === 'login') {
-            x.username = 'aaa';
-        }
-    };
-    */
 
     const handleForm = async (e: FormEvent) => {
         e.preventDefault();
@@ -48,22 +24,6 @@ const AuthForm = ({ mode }: AuthFormProps) => {
             username,
             password,
         };
-
-        if (mode === 'login') {
-            try {
-                await loginUser(userData);
-                navigate('/');
-            } catch (error) {
-                alert('Nepodařilo se přihlásit');
-            }
-        } else {
-            try {
-                await registerUser(userData);
-                navigate('/login');
-            } catch (error) {
-                alert('Nepodařilo se registrovat');
-            }
-        }
     };
 
     return (

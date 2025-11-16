@@ -1,11 +1,18 @@
-import usePets from '../hooks/usePets';
 import { useState } from 'react';
 import ListGridLayout from '../layouts/ListGridLayout';
-import InputSelect from './InputSelect';
 import LoadingSpinner from './LoadingSpinner';
 import PetCard from './PetCard';
-import { statusOptions } from '../constants';
-import { FindPetsByStatusStatusItem, useFindPetsByStatus } from '../api/api';
+import {
+    FindPetsByStatusStatusItem,
+    PetStatus,
+    useFindPetsByStatus,
+} from '../api/api';
+import MultiSelect from './MultiSelect';
+
+const statusOptions = Object.values(PetStatus).map((status) => ({
+    value: status,
+    label: status.charAt(0).toUpperCase() + status.slice(1),
+}));
 
 const PetsList = () => {
     const [status, setStatus] = useState<FindPetsByStatusStatusItem[]>([
@@ -27,17 +34,10 @@ const PetsList = () => {
     return (
         <>
             <div className="pb-8">
-                <InputSelect
-                    label="Status"
-                    id="status"
-                    value={status[0]}
-                    onChange={(value) =>
-                        setStatus((prev) => [
-                            ...prev,
-                            value as FindPetsByStatusStatusItem,
-                        ])
-                    }
-                    options={statusOptions}
+                <MultiSelect
+                    statusOptions={statusOptions}
+                    selectedValues={status}
+                    setValues={setStatus}
                 />
             </div>
             <ListGridLayout>
