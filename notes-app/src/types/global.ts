@@ -14,7 +14,7 @@ export type NoteResponse = Note;
 //User
 export type User = {
     id: string;
-    username: string;
+    email: string;
     password: string;
 };
 

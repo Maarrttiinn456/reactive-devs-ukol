@@ -1,29 +1,40 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router';
-import type { NewUser } from '../types/global';
+import { useMutation } from '@tanstack/react-query';
 import Button from './Button';
+import { loginUser, type ApiResponse } from '../api/api';
+import { useNavigate } from 'react-router';
 
 type AuthFormProps = {
     mode: 'register' | 'login';
 };
 
 const AuthForm = ({ mode }: AuthFormProps) => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
 
+    const { mutateAsync, isPending } = useMutation({
+        mutationFn: () => {
+            return loginUser({
+                password,
+                username: email,
+            });
+        },
+    });
+
     const handleForm = async (e: FormEvent) => {
         e.preventDefault();
 
-        if (!username || !password) {
+        if (!email || !password) {
             return alert('vyplňte prosím jméno i heslo');
         }
 
-        const userData: NewUser = {
-            username,
-            password,
-        };
+        const data = (await mutateAsync()) as ApiResponse;
+
+        window.localStorage.setItem('accessToken', data.message!);
+
+        navigate('/');
     };
 
     return (
@@ -35,8 +46,8 @@ const AuthForm = ({ mode }: AuthFormProps) => {
                         type="text"
                         id="username"
                         name="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="border px-3 py-2"
                     />
                 </div>
@@ -53,7 +64,12 @@ const AuthForm = ({ mode }: AuthFormProps) => {
                 </div>
 
                 <div className="flex justify-center">
-                    <Button type="submit" variant="gray" text="Odeslat" />
+                    <Button
+                        type="submit"
+                        variant="gray"
+                        text={isPending ? '...' : 'Odeslat'}
+                        disabled={isPending}
+                    />
                 </div>
             </form>
         </div>

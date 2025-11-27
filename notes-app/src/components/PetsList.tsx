@@ -28,7 +28,7 @@ const PetsList = () => {
     }
 
     if (isError) {
-        return <div>Error</div>;
+        return <div>Error: </div>;
     }
 
     return (
